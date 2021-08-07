@@ -33,6 +33,19 @@ class Pins:
     nReset = 21
     ISP = 13
 
+def set_buttons_to_input(pi):
+    # This is necessary or setting buttons to 3v3 will actually power the device by itself..
+    pi.set_mode(Pins.Button1, pigpio.INPUT)
+    pi.set_mode(Pins.Button2, pigpio.INPUT)
+    pi.set_mode(Pins.Button3, pigpio.INPUT)
+
+def set_buttons_to_output(pi):
+    pi.set_mode(Pins.Button1, pigpio.OUTPUT)
+    pi.set_mode(Pins.Button2, pigpio.OUTPUT)
+    pi.set_mode(Pins.Button3, pigpio.OUTPUT)
+
+
+
 if __name__ == "__main__":
     # if running on PC, set PIGPIO_ADDR=192.168.1.111, or to whatever your pi addr is.
     pi = pigpio.pi()
@@ -45,11 +58,14 @@ if __name__ == "__main__":
 
     if command == 'reboot':
         # Toggle power
+        set_buttons_to_input(pi)
         pi.set_mode(Pins.Power, pigpio.OUTPUT)
         pi.write(Pins.Power, 0)
         time.sleep(.150)
         pi.write(Pins.Power, 1)
+        set_buttons_to_output(pi)
     elif command == 'off':
+        set_buttons_to_input(pi)
         pi.set_mode(Pins.Power, pigpio.OUTPUT)
         pi.write(Pins.Power, 0)
     elif command == 'on':
@@ -63,6 +79,7 @@ if __name__ == "__main__":
         pi.write(Pins.nReset, 1)
 
     elif command == 'reboot-into-bootrom':
+        set_buttons_to_input(pi)
         pi.set_mode(Pins.Power, pigpio.OUTPUT)
         pi.set_mode(Pins.ISP, pigpio.OUTPUT)
         pi.write(Pins.Power, 0)
@@ -75,6 +92,7 @@ if __name__ == "__main__":
         # after 50ms release ISP
         time.sleep(.050)
         pi.write(Pins.ISP, 1)
+        set_buttons_to_output(pi)
 
     elif command == 'reset-into-bootrom':
         pi.set_mode(Pins.nReset, pigpio.OUTPUT)

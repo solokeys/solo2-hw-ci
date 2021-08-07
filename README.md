@@ -1,13 +1,13 @@
 
-## Dependencies
+## Dependencies on Pi
 
 ```bash
 sudo apt install git pigpio libusb-1.0-0-dev python3-pip
-sudo apt-get install -y -qq llvm libc6-dev-armel-cross libclang-dev clang
+sudo apt-get install -y -qq llvm libc6-dev-armel-cross libclang-dev clang pcscd pcsc-tools python3-setuptools swig gcc libpcsclite-dev python3-dev
 ```
 
 ```bash
-pip3 install -r requirements.txt
+pip3 install pigpio pytest fido2==0.8.1 pyscard pytest-ordering pytest-rerunfailures seedweed>=1.0rc7 solo-python==0.0.27
 ```
 
 ## Raspberry Pi setup
@@ -41,7 +41,6 @@ Install JLink gdb server.
 ```bash
 wget --post-data 'accept_license_agreement=accepted&non_emb_ctr=confirmed&submit=Download+software' https://www.segger.com/downloads/jlink/JLink_Linux_arm.tgz
 tar xvf JLink_Linux_arm.tgz
-sudo cp JLink_Linux_*/JLinkGDBServer /usr/local/bin/
 ```
 
 Add this line to your `~/.bashrc`.  Double check the path.
@@ -49,6 +48,39 @@ Add this line to your `~/.bashrc`.  Double check the path.
 ```bash
 export PATH="$PATH:/home/pi/JLink_Linux_V752b_arm"
 ```
+
+Add udev rules for solo hid devices.  Open `/etc/udev/rules.d/70-solokeys.rules` and add:
+
+```bash
+# Notify ModemManager this device should be ignored
+ACTION!="add|change|move", GOTO="mm_usb_device_blacklist_end"
+SUBSYSTEM!="usb", GOTO="mm_usb_device_blacklist_end"
+ENV{DEVTYPE}!="usb_device",  GOTO="mm_usb_device_blacklist_end"
+
+ATTRS{idVendor}=="0483", ATTRS{idProduct}=="a2ca", ENV{ID_MM_DEVICE_IGNORE}="1"
+
+LABEL="mm_usb_device_blacklist_end"
+
+
+# Solo bootloader + firmware access
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="a2ca", TAG+="uaccess"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="a2ca", TAG+="uaccess"
+
+# Solo 2 bootloader + firmware access
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1209", ATTRS{idProduct}=="beee", TAG+="uaccess"
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1209", ATTRS{idProduct}=="b000", TAG+="uaccess"
+
+# Unprovisioned Solo 2 bootloader access
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1fc9", ATTRS{idProduct}=="0021", TAG+="uaccess"
+
+# ST DFU access
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="df11", TAG+="uaccess"
+
+# U2F Zero
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="8acf", TAG+="uaccess"
+```
+
+run `sudo udevadm control --reload-rules && sudo udevadm trigger`.
 
 ### Connections
 
