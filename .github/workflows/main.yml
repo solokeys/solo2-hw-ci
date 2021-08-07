@@ -50,6 +50,6 @@ jobs:
       - name: Build firmware
         run: |
           git clone https://github.com/solokeys/solo2 && cd solo2/runners/lpc55
-          cargo build --release --features ${{ matrix.board }}
-          cargo size --release --features ${{ matrix.board }}
+          cargo build --release --features board-solo2
+          cargo size --release --features board-solo2
 
