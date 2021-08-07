@@ -11,7 +11,7 @@ CN=solokeys.com
 
 # generate EC private key
 echo "Generating root key.."
-openssl genrsa -out test-root-key.pem 4096
+openssl genrsa -out test-root-key.pem 2048
 
 # generate a "signing request"
 echo "Generating root certifcate.."
