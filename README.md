@@ -2,7 +2,7 @@
 ## Dependencies
 
 ```bash
-sudo apt install git pigpio libusb-1.0-0-dev
+sudo apt install git pigpio libusb-1.0-0-dev python3-pip
 sudo apt-get install -y -qq llvm libc6-dev-armel-cross libclang-dev clang
 ```
 

@@ -67,6 +67,8 @@ jobs:
         with:
           name: Firmware
           path: firmware.elf
+      - name: Install python dependencies
+        run: pip3 install -r requirements.txt
       - name: test
         run: |
           ls
