@@ -52,12 +52,24 @@ jobs:
           git clone https://github.com/solokeys/solo2 && cd solo2/runners/lpc55
           cargo build --release --features board-solo2
           cargo size --release --features board-solo2
-      - name: Upload
+      - name: Upload Firmware
         uses: actions/upload-artifact@v2
         continue-on-error: true
         with:
           name: Firmware
           path: solo2/runners/lpc55/target/thumbv8m.main-none-eabi/release/runner
+      - name: Build provision firmware
+        run: |
+          cd solo2/runners/lpc55
+          cargo build --release --no-default-features --features board-solo2,provisioner-app,admin-app,trussed/clients-2
+          cargo size --release --no-default-features --features board-solo2,provisioner-app,admin-app,trussed/clients-2
+      - name: Upload Provisioner Firmware
+        uses: actions/upload-artifact@v2
+        continue-on-error: true
+        with:
+          name: Provisioner
+          path: solo2/runners/lpc55/target/thumbv8m.main-none-eabi/release/runner
+
 
   run-lpc55:
     needs: build-lpc55
@@ -67,6 +79,10 @@ jobs:
         with:
           name: Firmware
           path: firmware.elf
+      - uses: actions/download-artifact@v2
+        with:
+          name: Provisioner
+          path: provisioner.elf
       - name: Install python dependencies
         run: pip3 install -r requirements.txt
       - name: reboot
