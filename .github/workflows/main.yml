@@ -57,7 +57,7 @@ jobs:
         continue-on-error: true
         with:
           name: Firmware
-          path: target/thumbv8m.main-none-eabi/release/runner
+          path: solo2/runners/lpc55/target/thumbv8m.main-none-eabi/release/runner
 
   run-lpc55:
     needs: build-lpc55
