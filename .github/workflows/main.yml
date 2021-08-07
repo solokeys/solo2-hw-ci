@@ -79,11 +79,11 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: Firmware
-          path: firmware.elf
+          path: firmware
       - uses: actions/download-artifact@v2
         with:
           name: Provisioner
-          path: provisioner.elf
+          path: provisioner
 
       - name: inspect
         run: find ..
@@ -103,7 +103,7 @@ jobs:
         run: JLinkGDBServer -strict -device LPC55S69 -if SWD -vd -q &
 
       - name: Program provisioner
-        run: gdb-multiarch -q -x jlink.gdb ../provisioner.elf &
+        run: gdb-multiarch -q -x jlink.gdb provisioner/runner &
         
       - name: Run provisioning
         run: |
