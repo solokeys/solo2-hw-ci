@@ -1,0 +1,69 @@
+[[provisions]]
+# Not required, but handy to prevent Solo from booting any existing image in case of a reset
+cmd = "Erase"
+address = 0
+length = 512
+
+[[provisions]]
+cmd = "Keystore"
+sub-cmd= "Enroll"
+
+[[provisions]]
+cmd = "Keystore"
+sub-cmd= "SetKey"
+key = "SecureBootKek"
+data = [
+    0xAA,0xAA,0xAA,0xAA,0xAA,0xAA,0xAA,0xAA,0xAA,0xAA,0xAA,0xAA,0xAA,0xAA,0xAA,0xAA,
+    0xAA,0xAA,0xAA,0xAA,0xAA,0xAA,0xAA,0xAA,0xAA,0xAA,0xAA,0xAA,0xAA,0xAA,0xAA,0xAA,
+]
+
+[[provisions]]
+cmd = "Keystore"
+sub-cmd= "GenerateKey"
+key = "PrinceRegion0"
+len = 16
+
+[[provisions]]
+cmd = "Keystore"
+sub-cmd= "GenerateKey"
+key = "PrinceRegion1"
+len = 16
+
+[[provisions]]
+cmd = "Keystore"
+sub-cmd= "GenerateKey"
+key = "PrinceRegion2"
+len = 16
+
+[[provisions]]
+cmd = "Keystore"
+sub-cmd= "GenerateKey"
+key = "UserPsk"
+len = 16
+
+[[provisions]]
+cmd = "Keystore"
+sub-cmd= "WriteNonVolatile"
+
+[[provisions]]
+cmd = "WriteMemoryWords"
+# temporary ram memory
+address = 0x20034000
+words = [
+    # Config for Prince region 1
+    0x50000001, 0xA0000, 0x00000,
+    # Config for Prince region 2
+    0x50000002, 0x80000, 0x1de00
+]
+
+[[provisions]]
+cmd = "ConfigureMemory"
+address = 0x20034000
+
+[[provisions]]
+cmd = "ConfigureMemory"
+address = 0x2003400C
+
+[[provisions]]
+cmd = "Reset"
+

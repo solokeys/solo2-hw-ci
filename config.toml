@@ -1,0 +1,4 @@
+
+[usb-hub]
+# The USB VID:PID as it should be passed to uhubctl
+usb-id = "2109:2811"
