@@ -49,7 +49,7 @@ jobs:
           use-tool-cache: true
       - name: Build firmware
         run: |
-          git checkout https://github.com/solokeys/solo2 && cd solo2/runners/lpc55
+          git clone https://github.com/solokeys/solo2 && cd solo2/runners/lpc55
           cargo build --release --features ${{ matrix.board }}
           cargo size --release --features ${{ matrix.board }}
 
