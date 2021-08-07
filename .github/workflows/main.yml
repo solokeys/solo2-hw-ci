@@ -1,0 +1,55 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches:
+      - dev
+      - main
+
+env:
+  CARGO_INCREMENTAL: 0
+  # do not set RUSTFLAGES, would overrides .cargo/config (linker script, flip-link)
+
+jobs:
+  build-lpc55:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        rust:
+          - stable
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install littlefs2-sys/micro-ecc-sys build dependencies
+        shell: bash
+        run: |
+          env && pwd && sudo apt-get update -y -qq && sudo apt-get install -y -qq llvm libc6-dev-i386 libclang-dev clang
+      - uses: fiam/arm-none-eabi-gcc@v1
+        with:
+          release: "9-2020-q2"
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: ${{ matrix.rust }}
+          target: thumbv8m.main-none-eabi
+          override: true
+          components: llvm-tools-preview
+      # Use precompiled binutils
+      - name: cargo install cargo-binutils
+        uses: actions-rs/install@v0.1
+        with:
+          crate: cargo-binutils
+          version: latest
+          use-tool-cache: true
+      - name: cargo install flip-link
+        uses: actions-rs/install@v0.1
+        with:
+          crate: flip-link
+          version: latest
+          use-tool-cache: true
+      - name: Build
+        run: |
+          cargo build --release --features ${{ matrix.board }}
+      - name: Size
+        run: |
+          cargo size --release --features ${{ matrix.board }}
