@@ -23,7 +23,7 @@ jobs:
       - name: Install littlefs2-sys/micro-ecc-sys build dependencies
         shell: bash
         run: |
-          env && pwd && sudo apt-get update -y -qq && sudo apt-get install -y -qq llvm libc6-dev-i386 libclang-dev clang
+          env && pwd && sudo apt-get update -y -qq && sudo apt-get install -y -qq llvm libc6-dev-armel-cross libclang-dev clang
       - uses: fiam/arm-none-eabi-gcc@v1
         with:
           release: "9-2020-q2"
@@ -47,9 +47,9 @@ jobs:
           crate: flip-link
           version: latest
           use-tool-cache: true
-      - name: Build
+      - name: Build firmware
         run: |
+          git checkout https://github.com/solokeys/solo2 && cd solo2/runners/lpc55
           cargo build --release --features ${{ matrix.board }}
-      - name: Size
-        run: |
           cargo size --release --features ${{ matrix.board }}
+
