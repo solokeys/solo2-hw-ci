@@ -3,6 +3,8 @@ import struct
 import hmac
 import hashlib
 
+import ecdsa
+
 from cbor2 import dumps, loads
 
 from cryptography import x509
@@ -181,17 +183,21 @@ def test_trussed_attestation(card,):
 
 
 if len(sys.argv) != 5:
-    print('Usage: %s <fido-attestation-cert.der> <fido-attestation-key.bin> <ca-root-cert.pem> <ca-root-key.pem>' % sys.argv[0])
+    print('Usage: %s <fido-attestation-cert.der> <fido-attestation-key.pem> <ca-intermediate-cert.pem> <ca-intermediate-key.pem>' % sys.argv[0])
     sys.exit(1)
 
 cert_der = open(sys.argv[1],'rb').read()
-private_key = open(sys.argv[2],'rb').read()
+private_key_pem = open(sys.argv[2],'rb').read()
+private_key_raw = ecdsa.SigningKey.from_pem(private_key_pem).to_string()
 
 # for trussed certs
 ca_cert = open(sys.argv[3],'rb').read()
 ca_key = open(sys.argv[4],'rb').read()
 
-card = next(SmartCardDevice.list_devices(name = "Provisioner"))
+try:
+    card = next(SmartCardDevice.list_devices(name = "Provisioner"))
+except:
+    card = next(SmartCardDevice.list_devices(name = "SoloKeys"))
 
 fido2_key_filename = b'/fido/sec/00'
 fido2_cert_filename = b'/fido/x5c/00'
@@ -206,7 +212,7 @@ try:
     print("Writing FIDO2 attestation")
     flags = (1 << 1) # SENSITIVE
     kind = 5 # P256
-    write_file(card, fido2_key_filename, struct.pack(">HH", flags, kind) + private_key)
+    write_file(card, fido2_key_filename, struct.pack(">HH", flags, kind) + private_key_raw)
     write_file(card, fido2_cert_filename, cert_der)
 
     print("Generating trussed attestation")

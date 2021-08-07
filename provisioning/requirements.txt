@@ -1,5 +1,6 @@
 cbor2
 asn1
 asn1crypto
+ecdsa
 pyscard
 

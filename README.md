@@ -8,7 +8,7 @@ sudo apt-get install -y -qq llvm libc6-dev-armel-cross libclang-dev clang pcscd 
 
 ```bash
 pip3 install pigpio pytest fido2==0.8.1 pyscard pytest-ordering pytest-rerunfailures seedweed>=1.0rc7 solo-python==0.0.27
-pip3 install cbor2 asn1 asn1crypto pyscard
+pip3 install cbor2 asn1 asn1crypto pyscard ecdsa
 ```
 
 ## Raspberry Pi setup

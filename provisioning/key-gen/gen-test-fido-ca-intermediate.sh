@@ -67,7 +67,6 @@ openssl verify -verbose -CAfile <(cat "../test-root-cert.pem" "test-intermediate
 (($? != 0)) && { printf '%s\n' "Need to check why signature isn't working"; exit 1; }
 
 rm -f test-key.pem.csr
-rm -f test-cert.pem test-key.pem
 
 echo "FIDO2 attestation key and cert $serial created & signed."
 echo "root: ../test-root-key.pem ../test-root-cert.pem"
