@@ -8,7 +8,7 @@ sudo apt-get install -y -qq llvm libc6-dev-armel-cross libclang-dev clang pcscd 
 
 ```bash
 pip3 install pigpio pytest fido2==0.8.1 pyscard pytest-ordering pytest-rerunfailures seedweed>=1.0rc7 solo-python==0.0.27
-pip3 install cbor2 asn1 asn1crypto pyscard ecdsa
+pip3 install cbor2 asn1 asn1crypto pyscard ecdsa cryptography --upgrade
 ```
 
 ## Raspberry Pi setup
@@ -78,6 +78,13 @@ SUBSYSTEM=="hidraw", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="8acf", TAG+="ua
 ```
 
 run `sudo udevadm control --reload-rules && sudo udevadm trigger`.
+
+Copy this repo's version of `Info.plist` that has Solo 2 added for PCSC.
+
+```
+sudo cp Info.plist /usr/lib/pcsc/drivers/ifd-ccid.bundle/Contents/Info.plist
+sudo systemctl restart pcscd
+```
 
 ### Connections
 

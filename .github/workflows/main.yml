@@ -61,8 +61,8 @@ jobs:
       - name: Build provision firmware
         run: |
           cd solo2/runners/lpc55
-          cargo build --release --no-default-features --features board-solo2,provisioner-app,admin-app,trussed/clients-2
-          cargo size --release --no-default-features --features board-solo2,provisioner-app,admin-app,trussed/clients-2
+          cargo build --release --no-default-features --features board-solo2,provisioner-app,admin-app,trussed/clients-2,provisioner-app/test-attestation
+          cargo size --release --no-default-features --features board-solo2,provisioner-app,admin-app,trussed/clients-2,provisioner-app/test-attestation
       - name: Upload Provisioner Firmware
         uses: actions/upload-artifact@v2
         continue-on-error: true
@@ -84,7 +84,23 @@ jobs:
           name: Provisioner
           path: provisioner.elf
       - name: Install python dependencies
-        run: pip3 install -r requirements.txt
+        run: |
+          pip3 install -r requirements.txt
+          pip3 install -r provisioning/requirements.txt
+      - name: Generate provisioning key material
+        run: cd provisioning && ./gen-all.sh
+
       - name: reboot
         run: |
           python3 control.py reboot
+
+      - name: JLinkGDBServer
+        run: JLinkGDBServer -strict -device LPC55S69 -if SWD -vd -q &
+
+      - name: Program provisioner
+        run: gdb-multiarch -q -x jlink.gdb provisioner.elf &
+        
+      - name: Run provisioning
+        run: |
+          cd provisioning
+          python3 provision_fido2_trussed.py key-gen/fido2/test-cert.der key-gen/fido2/test-key.pem key-gen/trussed/test-cert-p256.pem key-gen/trussed/test-key-p256.pem
