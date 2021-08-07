@@ -89,7 +89,7 @@ jobs:
           pip3 install -r requirements.txt
           pip3 install -r provisioning/requirements.txt
       - name: Generate provisioning key material
-        run: cd provisioning && ./gen-all.sh
+        run: cd provisioning/key-gen && ./gen-all.sh
 
       - name: reboot
         run: |
