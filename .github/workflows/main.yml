@@ -109,12 +109,6 @@ jobs:
           cd provisioning
           python3 provision_fido2_trussed.py key-gen/fido2/test-cert.der key-gen/fido2/test-key.pem key-gen/trussed/test-cert-p256.pem key-gen/trussed/test-key-p256.pem
 
-      - name: Program firmware
-        run: gdb-multiarch -q -x jlink.gdb provisioner/runner &
- 
-      - name: Run button presser
-        run: while [ 1 ] ; do python3 control.py toggle-button-1 ; sleep .5 ; done &
-
   test-firmware-lpc55:
     needs: provision-lpc55
     runs-on: self-hosted
