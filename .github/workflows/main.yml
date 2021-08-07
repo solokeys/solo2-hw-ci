@@ -97,7 +97,7 @@ jobs:
 
       - name: reboot
         run: |
-          python3 control.py reboot
+          python3 control.py reboot-into-bootrom
 
       - name: JLinkGDBServer
         run: JLinkGDBServer -strict -device LPC55S69 -if SWD -vd -q &
