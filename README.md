@@ -82,6 +82,14 @@ sudo cp Info.plist /usr/lib/pcsc/drivers/ifd-ccid.bundle/Contents/Info.plist
 sudo systemctl restart pcscd
 ```
 
+Install Linux driver for the ACR1252 NFC reader.
+
+```
+wget https://www.acs.com.hk/download-driver-unified/11929/ACS-Unified-PKG-Lnx-118-P.zip
+unzip ACS-Unified-PKG-Lnx-118-P.zip
+cd ACS-Unified-PKG-Lnx-118-P/raspbian/buster && sudo apt install ./*.deb
+```
+
 ### Connections
 
 - Red + brown of ribbon connector is on the edge of pin header of RPi

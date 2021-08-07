@@ -138,9 +138,12 @@ jobs:
         run: gdb-multiarch -q -x jlink.gdb firmware/runner &
         
       - name: Run button presser
-        run: while [ 1 ] ; do python3 control.py toggle-button-1 ; sleep .5 ; done &
+        run: bash -c "while [ 1 ] ; do python3 control.py toggle-button-1 ; sleep .5 ; done" &
 
       - name: Run fido2 tests
         run: |
           cd fido2-tests
-          python3 -m pytest --vendor solobee -s -x -l -v tests/standard/ --ignore tests/standard/fido2/user_presence/
+          python3 -m pytest --vendor solobee -s -x -l -v tests/standard/ --ignore tests/standard/fido2/user_presence/ --ignore tests/standard/transport/test_hid.py
+          # turn off the button presser, finish hid tests
+          pkill -f 'bash -c while'
+          python3 -m pytest --vendor solobee -s -x -l -v tests/standard/transport/test_hid.py

@@ -14,4 +14,6 @@ load
 monitor reset
 monitor semihosting enable
 monitor semihosting IOClient 3
-continue
+
+rebootloop
+
