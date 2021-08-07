@@ -58,3 +58,15 @@ jobs:
         with:
           name: Firmware
           path: target/thumbv8m.main-none-eabi/release/runner
+
+  run-lpc55:
+    needs: build-lpc55
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: Firmware
+      - name: test
+        run: |
+          ls
+          python control.py reboot
+          ls
