@@ -13,7 +13,7 @@ env:
 
 jobs:
   build-lpc55:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         rust:
@@ -23,7 +23,7 @@ jobs:
       - name: Install littlefs2-sys/micro-ecc-sys build dependencies
         shell: bash
         run: |
-          env && pwd && sudo apt-get update -y -qq && sudo apt-get install -y -qq llvm libc6-dev-armel-cross libclang-dev clang
+          env && pwd && sudo apt-get update -y -qq && sudo apt-get install -y -qq llvm libc6-dev-i386 libclang-dev clang
       - uses: fiam/arm-none-eabi-gcc@v1
         with:
           release: "9-2020-q2"
@@ -52,4 +52,9 @@ jobs:
           git clone https://github.com/solokeys/solo2 && cd solo2/runners/lpc55
           cargo build --release --features board-solo2
           cargo size --release --features board-solo2
-
+      - name: Upload
+        uses: actions/upload-artifact@v2
+        continue-on-error: true
+        with:
+          name: Firmware
+          path: target/thumbv8m.main-none-eabi/release/runner

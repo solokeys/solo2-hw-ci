@@ -89,6 +89,32 @@ if __name__ == "__main__":
         # after 50ms release nReset
         time.sleep(.050)
         pi.write(Pins.ISP, 1)
+    elif command == 'reset-buttons':
+        pi.set_mode(Pins.Button1, pigpio.OUTPUT)
+        pi.set_mode(Pins.Button2, pigpio.OUTPUT)
+        pi.set_mode(Pins.Button3, pigpio.OUTPUT)
+
+        pi.write(Pins.Button1, 1)
+        pi.write(Pins.Button2, 1)
+        pi.write(Pins.Button3, 1)
+    elif command == 'toggle-button-1':
+        pi.set_mode(Pins.Button1, pigpio.OUTPUT)
+        pi.write(Pins.Button1, 0)
+        time.sleep(.100)
+        pi.write(Pins.Button1, 1)
+
+    elif command == 'toggle-button-2':
+        pi.set_mode(Pins.Button2, pigpio.OUTPUT)
+        pi.write(Pins.Button2, 0)
+        time.sleep(.100)
+        pi.write(Pins.Button2, 1)
+
+    elif command == 'toggle-button-3':
+        pi.set_mode(Pins.Button3, pigpio.OUTPUT)
+        pi.write(Pins.Button3, 0)
+        time.sleep(.100)
+        pi.write(Pins.Button3, 1)
+
 
     else:
         raise ValueError(f"Invalid command: {command}")
