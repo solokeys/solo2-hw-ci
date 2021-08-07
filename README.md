@@ -42,12 +42,8 @@ Install JLink gdb server.
 ```bash
 wget --post-data 'accept_license_agreement=accepted&non_emb_ctr=confirmed&submit=Download+software' https://www.segger.com/downloads/jlink/JLink_Linux_arm.tgz
 tar xvf JLink_Linux_arm.tgz
-```
-
-Add this line to your `~/.bashrc`.  Double check the path.
-
-```bash
-export PATH="$PATH:/home/pi/JLink_Linux_V752b_arm"
+cd JLink_Linux_*_arm
+sudo ln -s `pwd`/JLinkGDBServer /usr/bin/JLinkGDBServer
 ```
 
 Add udev rules for solo hid devices.  Open `/etc/udev/rules.d/70-solokeys.rules` and add:

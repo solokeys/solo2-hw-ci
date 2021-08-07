@@ -83,7 +83,11 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: Provisioner
-          path: provisioner.elf
+          path: ../provisioner.elf
+
+      - name: inspect
+        run: find ..
+
       - name: Install python dependencies
         run: |
           pip3 install -r requirements.txt
