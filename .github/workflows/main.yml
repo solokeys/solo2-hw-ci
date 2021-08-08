@@ -163,3 +163,7 @@ jobs:
           cd fido2-tests
           python3 ../control.py switch-into-passive-mode
           python3 -m pytest --vendor solobee -s -x -l -v --nfc tests/standard/ --timeout 25 --reruns 3 --reruns-delay 1
+
+      - name: Schedule Pi restart
+        run: |
+          sudo shutdown -r +1

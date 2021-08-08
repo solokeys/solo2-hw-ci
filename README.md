@@ -101,6 +101,12 @@ unzip ACS-Unified-PKG-Lnx-118-P.zip
 cd ACS-Unified-PKG-Lnx-118-P/raspbian/buster && sudo apt install ./*.deb
 ```
 
+Add entry to cron tab to restart daily at 4am (`sudo crontab -e`).
+
+```
+0 4 * * * /sbin/shutdown -r now
+```
+
 ### Connections
 
 - Red + brown of ribbon connector is on the edge of pin header of RPi
