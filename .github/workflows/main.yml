@@ -132,6 +132,7 @@ jobs:
       - name: reboot
         run: |
           python3 control.py reboot-into-bootrom
+          python3 control.py nfc-off
 
       - name: JLinkGDBServer
         run: JLinkGDBServer -strict -device LPC55S69 -if SWD -vd -q &

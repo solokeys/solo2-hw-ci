@@ -25,6 +25,10 @@ from smartcard.pcsc.PCSCPart10 import (SCARD_SHARE_DIRECT)
 # 40     | brown        | GPIO21       | nRESET
 # 
 
+def set_all_gpio_to_input(pi):
+    for pin in (6,12,13,19,16,26,20,21):
+        pi.set_mode(pin, pigpio.INPUT)
+
 class Pins:
     Power = 2
 
@@ -145,15 +149,16 @@ def set_buttons_to_output(pi):
 def try_to_set_nfc_field(enable):
     # Turns on or off nfc reader if connected, skips if not.
     reader = Reader.get_acr_reader()
-    reader.connect()
-    tester = Tester(reader)
-    tester.start_transparent_session()
-    if enable:
-        tester.turn_on_field()
-        tester.end_transparent_session()
-    else:
-        tester.turn_off_field()
-        # leave transparent session on, keeping the field off..
+    if reader is not None:
+        reader.connect()
+        tester = Tester(reader)
+        tester.start_transparent_session()
+        if enable:
+            tester.turn_on_field()
+            tester.end_transparent_session()
+        else:
+            tester.turn_off_field()
+            # leave transparent session on, keeping the field off..
 
 class AcrTlv:
     def __init__(self,):
@@ -351,8 +356,12 @@ if __name__ == "__main__":
 
     command = sys.argv[1].lower()
 
-    if command == 'reboot':
+    if command == 'reset-pins':
+        set_all_gpio_to_input(pi)
+
+    elif command == 'reboot':
         # Toggle power
+        set_all_gpio_to_input(pi)
         try_to_set_nfc_field(0)
         set_buttons_to_input(pi)
         pi.set_mode(Pins.Power, pigpio.OUTPUT)
@@ -362,6 +371,7 @@ if __name__ == "__main__":
         set_buttons_to_output(pi)
         try_to_set_nfc_field(1)
     elif command == 'off':
+        set_all_gpio_to_input(pi)
         try_to_set_nfc_field(0)
         set_buttons_to_input(pi)
         pi.set_mode(Pins.Power, pigpio.OUTPUT)
@@ -378,6 +388,7 @@ if __name__ == "__main__":
         pi.write(Pins.nReset, 1)
 
     elif command == 'reboot-into-bootrom':
+        set_all_gpio_to_input(pi)
         try_to_set_nfc_field(0)
         set_buttons_to_input(pi)
         pi.set_mode(Pins.Power, pigpio.OUTPUT)
@@ -439,6 +450,7 @@ if __name__ == "__main__":
     elif command == 'nfc-off':
         try_to_set_nfc_field(0)
     elif command == 'switch-into-passive-mode':
+        set_all_gpio_to_input(pi)
         try_to_set_nfc_field(0)
         set_buttons_to_input(pi)
         pi.set_mode(Pins.Power, pigpio.OUTPUT)
