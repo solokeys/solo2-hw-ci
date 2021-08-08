@@ -9,6 +9,27 @@ This is a runner for CI testing that runs on a Raspberry Pi hooked up to a test 
 
 Right now it triggers off of any commit to this repo.
 
+# Setting up a Raspberry Pi from release
+
+DD the image in the latest release on this repo onto an SD card and boot a Raspberry Pi 4B off of it.
+
+SSH into the Pi (pi, raspberry).
+
+Go to solo2-hw-ci github settings -> Actions -> runners and add a new runner.
+
+```
+cd actions-runner
+```
+
+# Creating a new Pi runner from scratch
+
+First: Install the lite version of raspbian onto a Raspberry Pi 4B (no desktop).  
+
+Before booting the Pi, write an empty file `/boot/ssh`
+to the sdcard from a different computer, so that ssh will be enabled on the pi.
+
+The default username and password: pi,raspberry.  The rest of the "from scratch" instructions will be carried out on the RPi.
+
 ## Dependencies on Pi
 
 ```bash
@@ -44,7 +65,14 @@ Run:
 
 ```
 # Enable the github runner to run at startup.
+sudo systemctl enable github-runner.service
 sudo systemctl status github-runner.service
+```
+
+Also enable the pigpiod service.
+
+```
+sudo systemctl enable pigpiod.service
 ```
 
 Install JLink gdb server.
@@ -100,7 +128,7 @@ unzip ACS-Unified-PKG-Lnx-118-P.zip
 cd ACS-Unified-PKG-Lnx-118-P/raspbian/buster && sudo apt install ./*.deb
 ```
 
-### Connections
+# Connections
 
 - Red + brown of ribbon connector is on the edge of pin header of RPi
 
@@ -127,8 +155,5 @@ cd ACS-Unified-PKG-Lnx-118-P/raspbian/buster && sudo apt install ./*.deb
 
 ### Raspberry Pi setup
 
-Install the lite version of raspbian onto a Pi (no desktop).  Before booting the Pi, write an empty file `/boot/ssh`
-to the sdcard from a different computer, so that ssh will be enabled on the pi.
 
-default username,password: pi,raspberry
 
