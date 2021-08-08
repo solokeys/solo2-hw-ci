@@ -26,8 +26,14 @@ from smartcard.pcsc.PCSCPart10 import (SCARD_SHARE_DIRECT)
 # 
 
 def set_all_gpio_to_input(pi):
-    for pin in (6,12,13,19,16,26,20,21):
+    for pin in (2, 6,12,13,19,16,26,20,21):
         pi.set_mode(pin, pigpio.INPUT)
+        
+    # Set buttons to HIGH default when they are next set to output.
+    # HIGH is read as idle button for device.
+    pi.write(Pins.Button1, 1)
+    pi.write(Pins.Button2, 1)
+    pi.write(Pins.Button3, 1)
 
 class Pins:
     Power = 2
@@ -362,34 +368,29 @@ if __name__ == "__main__":
     elif command == 'reboot':
         # Toggle power
         set_all_gpio_to_input(pi)
-        try_to_set_nfc_field(0)
         set_buttons_to_input(pi)
         pi.set_mode(Pins.Power, pigpio.OUTPUT)
         pi.write(Pins.Power, 0)
         time.sleep(.150)
         pi.write(Pins.Power, 1)
         set_buttons_to_output(pi)
-        try_to_set_nfc_field(1)
     elif command == 'off':
         set_all_gpio_to_input(pi)
-        try_to_set_nfc_field(0)
         set_buttons_to_input(pi)
         pi.set_mode(Pins.Power, pigpio.OUTPUT)
         pi.write(Pins.Power, 0)
     elif command == 'on':
         pi.set_mode(Pins.Power, pigpio.OUTPUT)
         pi.write(Pins.Power, 1)
-        try_to_set_nfc_field(1)
     elif command == 'reset':
         pi.set_mode(Pins.nReset, pigpio.OUTPUT)
         pi.write(Pins.nReset, 0)
-        time.sleep(.050)
+        time.sleep(.100)
         pi.set_mode(Pins.nReset, pigpio.OUTPUT)
         pi.write(Pins.nReset, 1)
 
     elif command == 'reboot-into-bootrom':
         set_all_gpio_to_input(pi)
-        try_to_set_nfc_field(0)
         set_buttons_to_input(pi)
         pi.set_mode(Pins.Power, pigpio.OUTPUT)
         pi.set_mode(Pins.ISP, pigpio.OUTPUT)
@@ -397,14 +398,13 @@ if __name__ == "__main__":
 
         # while power is turned out, assert ISP.
         pi.write(Pins.ISP, 0)
-        time.sleep(.050)
+        time.sleep(.150)
         pi.write(Pins.Power, 1)
 
-        # after 50ms release ISP
-        time.sleep(.050)
+        # after 100ms release ISP
+        time.sleep(.100)
         pi.write(Pins.ISP, 1)
         set_buttons_to_output(pi)
-        try_to_set_nfc_field(1)
 
     elif command == 'reset-into-bootrom':
         pi.set_mode(Pins.nReset, pigpio.OUTPUT)
@@ -413,11 +413,11 @@ if __name__ == "__main__":
 
         # while reset asserted, assert ISP.
         pi.write(Pins.ISP, 0)
-        time.sleep(.050)
+        time.sleep(.100)
         pi.write(Pins.nReset, 1)
 
         # after 50ms release nReset
-        time.sleep(.050)
+        time.sleep(.100)
         pi.write(Pins.ISP, 1)
     elif command == 'reset-buttons':
         pi.set_mode(Pins.Button1, pigpio.OUTPUT)
