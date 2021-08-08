@@ -146,5 +146,5 @@ jobs:
           python3 -m pytest --vendor solobee -s -x -l -v tests/standard/ --ignore tests/standard/fido2/user_presence/ --ignore tests/standard/transport/test_hid.py --timeout 25 --reruns 2
           # turn off the button presser, finish hid tests
           pkill -f 'python3 control.py toggle-button-1'
-          sleep 7 && python3 control.py toggle-button-1 &
+          sleep 7 && python3 ../control.py toggle-button-1 &
           python3 -m pytest --vendor solobee -s -x -l -v tests/standard/transport/test_hid.py --timeout 15 --reruns 2
