@@ -368,24 +368,20 @@ if __name__ == "__main__":
     elif command == 'reboot':
         # Toggle power
         set_all_gpio_to_input(pi)
-        try_to_set_nfc_field(0)
         set_buttons_to_input(pi)
         pi.set_mode(Pins.Power, pigpio.OUTPUT)
         pi.write(Pins.Power, 0)
         time.sleep(.150)
         pi.write(Pins.Power, 1)
         set_buttons_to_output(pi)
-        try_to_set_nfc_field(1)
     elif command == 'off':
         set_all_gpio_to_input(pi)
-        try_to_set_nfc_field(0)
         set_buttons_to_input(pi)
         pi.set_mode(Pins.Power, pigpio.OUTPUT)
         pi.write(Pins.Power, 0)
     elif command == 'on':
         pi.set_mode(Pins.Power, pigpio.OUTPUT)
         pi.write(Pins.Power, 1)
-        try_to_set_nfc_field(1)
     elif command == 'reset':
         pi.set_mode(Pins.nReset, pigpio.OUTPUT)
         pi.write(Pins.nReset, 0)
@@ -395,7 +391,6 @@ if __name__ == "__main__":
 
     elif command == 'reboot-into-bootrom':
         set_all_gpio_to_input(pi)
-        try_to_set_nfc_field(0)
         set_buttons_to_input(pi)
         pi.set_mode(Pins.Power, pigpio.OUTPUT)
         pi.set_mode(Pins.ISP, pigpio.OUTPUT)
@@ -410,7 +405,6 @@ if __name__ == "__main__":
         time.sleep(.050)
         pi.write(Pins.ISP, 1)
         set_buttons_to_output(pi)
-        try_to_set_nfc_field(1)
 
     elif command == 'reset-into-bootrom':
         pi.set_mode(Pins.nReset, pigpio.OUTPUT)
