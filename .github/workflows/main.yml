@@ -102,7 +102,9 @@ jobs:
         run: JLinkGDBServer -strict -device LPC55S69 -if SWD -vd -q &
 
       - name: Program provisioner
-        run: gdb-multiarch -q -x jlink.gdb provisioner/runner &
+        run: |
+          gdb-multiarch -q -x jlink.gdb provisioner/runner &
+          sleep 2
         
       - name: Run provisioning
         run: |
@@ -135,7 +137,9 @@ jobs:
         run: JLinkGDBServer -strict -device LPC55S69 -if SWD -vd -q &
 
       - name: Program firmware
-        run: gdb-multiarch -q -x jlink.gdb firmware/runner &
+        run: |
+          gdb-multiarch -q -x jlink.gdb firmware/runner &
+          sleep 2
         
       - name: Run button presser
         run: bash -c "while [ 1 ] ; do python3 control.py toggle-button-1 ; sleep .5 ; done" &
