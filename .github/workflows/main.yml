@@ -140,7 +140,7 @@ jobs:
       - name: Run button presser
         run: bash -c "while [ 1 ] ; do python3 control.py toggle-button-1 ; sleep .5 ; done" &
 
-      - name: Run fido2 tests
+      - name: Run fido2 tests over HID
         run: |
           cd fido2-tests
           python3 -m pytest --vendor solobee -s -x -l -v tests/standard/ --ignore tests/standard/fido2/user_presence/ --ignore tests/standard/transport/test_hid.py --timeout 25 --reruns 2
@@ -148,3 +148,9 @@ jobs:
           pkill -f 'python3 control.py toggle-button-1'
           sleep 7 && python3 ../control.py toggle-button-1 &
           python3 -m pytest --vendor solobee -s -x -l -v tests/standard/transport/test_hid.py --timeout 15 --reruns 2
+
+      - name: Run fido2 tests over passive NFC
+        run: |
+          cd fido2-tests
+          python3 ../control.py switch-into-passive-mode
+          python3 -m pytest --vendor solobee -s -x -l -v --nfc tests/standard/ --timeout 25 --reruns 3
