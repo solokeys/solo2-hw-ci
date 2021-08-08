@@ -149,7 +149,7 @@ jobs:
       - name: Run fido2 tests over HID
         run: |
           cd fido2-tests
-          python3 -m pytest --vendor solobee -s -x -l -v tests/standard/ --ignore tests/standard/fido2/user_presence/ --ignore tests/standard/transport/test_hid.py --timeout 25 --reruns 2
+          python3 -m pytest --vendor solobee -s -x -l -v tests/standard/ --ignore tests/standard/fido2/user_presence/ --ignore tests/standard/transport/test_hid.py --timeout 25 --reruns 2 --reruns-delay 1
           # turn off the button presser, finish hid tests
           pkill -f 'python3 control.py toggle-button-1'
           sleep 7 && python3 ../control.py toggle-button-1 &
@@ -159,4 +159,4 @@ jobs:
         run: |
           cd fido2-tests
           python3 ../control.py switch-into-passive-mode
-          python3 -m pytest --vendor solobee -s -x -l -v --nfc tests/standard/ --timeout 25 --reruns 3
+          python3 -m pytest --vendor solobee -s -x -l -v --nfc tests/standard/ --timeout 25 --reruns 3 --reruns-delay 1
