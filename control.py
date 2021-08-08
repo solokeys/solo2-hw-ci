@@ -26,7 +26,7 @@ from smartcard.pcsc.PCSCPart10 import (SCARD_SHARE_DIRECT)
 # 
 
 def set_all_gpio_to_input(pi):
-    for pin in (6,12,13,19,16,26,20,21):
+    for pin in (2, 6,12,13,19,16,26,20,21):
         pi.set_mode(pin, pigpio.INPUT)
 
 class Pins:
