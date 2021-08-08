@@ -1,3 +1,13 @@
+# Hardware CI tester for Solo 2
+
+This is a runner for CI testing that runs on a Raspberry Pi hooked up to a test Solo 2.  It will:
+
+1. Program it with the latest provisioning firmware.
+2. Provision the device.
+3. Program it with the latest firmware.
+4. Test it against all of the fido2-tests over HID and NFC.
+
+Right now it triggers off of any commit to this repo.
 
 ## Dependencies on Pi
 
