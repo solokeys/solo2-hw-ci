@@ -28,6 +28,12 @@ from smartcard.pcsc.PCSCPart10 import (SCARD_SHARE_DIRECT)
 def set_all_gpio_to_input(pi):
     for pin in (2, 6,12,13,19,16,26,20,21):
         pi.set_mode(pin, pigpio.INPUT)
+        
+    # Set buttons to HIGH default when they are next set to output.
+    # HIGH is read as idle button for device.
+    pi.write(Pins.Button1, 1)
+    pi.write(Pins.Button2, 1)
+    pi.write(Pins.Button3, 1)
 
 class Pins:
     Power = 2
