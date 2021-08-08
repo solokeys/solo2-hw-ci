@@ -100,7 +100,9 @@ jobs:
           python3 control.py nfc-off
 
       - name: JLinkGDBServer
-        run: JLinkGDBServer -strict -device LPC55S69 -if SWD -vd -q &
+        run: |
+          JLinkGDBServer -strict -device LPC55S69 -if SWD -vd -q &
+          sleep 2
 
       - name: Program provisioner
         run: |
