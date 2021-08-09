@@ -158,7 +158,25 @@ Add entry to cron tab to restart daily at 4am (`sudo crontab -e`).
 
 ### Connections
 
-- Red + brown of ribbon connector is on the edge of pin header of RPi
+Connect [10 pin ribbon connector](https://www.digikey.com/en/products/detail/samtec-inc/IDSD-05-D-20-00-T/3679935) to rightmode side of RPi header.  Connect single power circuit jumper to GPIO2.
 
+![IMG_4970](https://user-images.githubusercontent.com/3942133/128653614-76b8a8a3-eb78-4070-80d1-02d4f69b3632.jpg)
+
+
+Connect ribbon cable to test Solo 2.  Ensure Solo 2 is connected to power circuit ([link](https://www.amazon.com/USB-PowerControl-board-Raspberry-Arduinos/dp/B00VQLS09K)).
+
+![IMG_4972](https://user-images.githubusercontent.com/3942133/128653652-3b2215af-d8ea-42a3-a7b9-1683e28a8139.jpg)
+
+The power control jump should be soldered to pins 1+2 (on the backside) 
+on the USB power switch.
+
+![IMG_4973](https://user-images.githubusercontent.com/3942133/128653808-82a80a01-3089-4683-8c9e-b167109b1fd9.jpg)
+![IMG_4974 (1)](https://user-images.githubusercontent.com/3942133/128653810-b8242e66-030d-4644-a1f0-75b92eb3d95b.jpg)
+
+Connect NFC reader ACR1252 to USB on Pi and place under test Solo 2.
+
+Connect Jlink programmer to Pi USB and apply [TC2030-CTX 6-Pin tag connect cable](https://www.tag-connect.com/product/tc2030-ctx-6-pin-cable-for-arm-cortex) to Solo 2.
+
+Connect Ethernet from Pi to a DHCP enabled router with internet access.  Apply USB-C power source to Pi.
 
 
