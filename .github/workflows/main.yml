@@ -81,10 +81,6 @@ jobs:
           name: Provisioner
           path: provisioner
 
-      - name: Download fido2 tests
-        run: |
-          git clone https://github.com/solokeys/fido2-tests.git
-
       - name: Install python dependencies
         run: |
           pip3 install -r requirements.txt
@@ -128,8 +124,6 @@ jobs:
       - name: Download fido2 tests
         run: |
           git clone https://github.com/solokeys/fido2-tests.git
-          # Need to add config that isn't available over command line
-          # cp pytest.ini fido2-tests/
 
       - name: Install python dependencies
         run: |
@@ -162,6 +156,8 @@ jobs:
 
       - name: Run fido2 tests over passive NFC
         run: |
+          # Need to add config that isn't available over command line
+          cp pytest.ini fido2-tests/
           cd fido2-tests
           python3 ../control.py switch-into-passive-mode
           python3 -m pytest --vendor solobee -s -x -l -v --nfc tests/standard/ --timeout 25 --reruns 3 --reruns-delay 1
