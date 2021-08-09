@@ -129,7 +129,7 @@ jobs:
         run: |
           git clone https://github.com/solokeys/fido2-tests.git
           # Need to add config that isn't available over command line
-          cp pytest.ini fido2-tests/
+          # cp pytest.ini fido2-tests/
 
       - name: Install python dependencies
         run: |
