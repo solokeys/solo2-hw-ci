@@ -146,6 +146,8 @@ jobs:
 
       - name: Run fido2 tests over HID
         run: |
+          # Need to add config that isn't available over command line
+          cp pytest.ini fido2-tests/
           cd fido2-tests
           python3 -m pytest --vendor solobee -s -x -l -v tests/standard/ --ignore tests/standard/fido2/user_presence/ --ignore tests/standard/transport/test_hid.py --timeout 25 --reruns 2 --reruns-delay 1
           # turn off the button presser, finish hid tests
