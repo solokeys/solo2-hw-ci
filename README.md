@@ -15,11 +15,11 @@ DD the image in the latest release on this repo onto an SD card and boot a Raspb
 
 SSH into the Pi (pi, raspberry).
 
-Go to solo2-hw-ci github settings -> Actions -> runners and add a new runner.
+Go to solo2-hw-ci github settings -> Actions -> runners and add a new runner.  Follow the instructions exactly.
 
-```
-cd actions-runner
-```
+In the end, running `/home/pi/actions-runner/run.sh` should activate the runner, and is what an already set up systemd service will run at boot.
+
+Reboot and you're Done!
 
 # Creating a new Pi runner from scratch
 
@@ -56,6 +56,7 @@ Description=Example systemd service.
 Type=simple
 User=pi
 ExecStart=/bin/bash /home/pi/actions-runner/run.sh
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
@@ -67,6 +68,27 @@ Run:
 # Enable the github runner to run at startup.
 sudo systemctl enable github-runner.service
 sudo systemctl status github-runner.service
+```
+
+Add this file to `/lib/systemd/system/nfc-off.service`
+
+```
+[Unit]
+Description=Turn off nfc reader at boot to avoid beeps.
+After=pcscd.service
+
+[Service]
+Type=oneshot
+User=pi
+ExecStart=/usr/bin/python3 /home/pi/solo2-hw-ci/control.py nfc-off
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```
+sudo systemctl enable nfc-off.service
+sudo systemctl status nfc-off.service
 ```
 
 Also enable the pigpiod service.
