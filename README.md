@@ -179,4 +179,3 @@ Connect Jlink programmer to Pi USB and apply [TC2030-CTX 6-Pin tag connect cable
 
 Connect Ethernet from Pi to a DHCP enabled router with internet access.  Apply USB-C power source to Pi.
 
-
