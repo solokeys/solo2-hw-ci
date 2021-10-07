@@ -145,6 +145,7 @@ jobs:
         run: bash -c "while [ 1 ] ; do python3 control.py toggle-button-1 ; sleep .5 ; done" &
 
       - name: Run fido2 tests over HID
+        continue-on-error: true
         run: |
           # Need to add config that isn't available over command line
           cp pytest.ini fido2-tests/
