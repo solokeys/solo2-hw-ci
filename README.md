@@ -178,3 +178,4 @@ Connect NFC reader ACR1252 to USB on Pi and place under test Solo 2.
 Connect Jlink programmer to Pi USB and apply [TC2030-CTX 6-Pin tag connect cable](https://www.tag-connect.com/product/tc2030-ctx-6-pin-cable-for-arm-cortex) to Solo 2.
 
 Connect Ethernet from Pi to a DHCP enabled router with internet access.  Apply USB-C power source to Pi.
+
