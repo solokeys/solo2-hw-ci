@@ -30,6 +30,7 @@ to the sdcard from a different computer, so that ssh will be enabled on the pi.
 
 The default username and password: pi,raspberry.  The rest of the "from scratch" instructions will be carried out on the RPi.
 
+
 ## Dependencies on Pi
 
 ```bash
